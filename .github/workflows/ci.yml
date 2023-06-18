@@ -10,7 +10,6 @@ jobs:
     strategy:
       matrix:
         file:
-          - project-template-esp32.yaml
           - senor-ambiente.yaml
     steps:
       - name: Checkout source code
