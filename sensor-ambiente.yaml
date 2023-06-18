@@ -1,0 +1,146 @@
+# These substitutions allow the end user to override certain values
+substitutions:
+  name: "sensor-ambiente"
+
+esphome:
+  name: "${name}"
+  # Automatically add the mac address to the name
+  # so you can use a single firmware for all devices
+  name_add_mac_suffix: true
+
+  # This will allow for (future) project identification,
+  # configuration and updates.
+  project:
+    name: esphome.sensor-ambiente
+    version: "0.0.1"
+
+esp8266:
+  board: esp01_1m
+
+# To be able to get logs from the device via serial and api.
+logger:
+
+# API is a requirement of the dashboard import.
+api:
+
+# OTA is required for Over-the-Air updating
+ota:
+
+# This should point to the public location of this yaml file.
+dashboard_import:
+  package_import_url: github://leongalera/senor-ambiente/senor-ambiente.yaml@main
+
+wifi:
+  # Set up a wifi access point using the device name above
+  ap:
+    password: "96228198"
+
+# In combination with the `ap` this allows the user
+# to provision wifi credentials to the device.
+captive_portal:
+
+
+##########################################################
+# Most projects should not remove anything from above here
+# and should just modify the name, project name/version 
+# and git url for the dashboard_import
+##########################################################
+
+
+# Sets up the improv via serial client for Wi-Fi provisioning.
+# Handy if your device has a usb port for the user to add credentials when they first get it.
+improv_serial:
+
+
+i2c:
+    sda: GPIO4
+    scl: GPIO5
+    frequency: 400kHz
+
+uart:
+  id: uartbus
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
+
+ld2410:
+  timeout: 150s
+  # max_move_distance : 6m
+  max_still_distance: 3m
+  # g0_move_threshold: 10
+  # g0_still_threshold: 20
+  # g1_move_threshold: 10
+  # g1_still_threshold: 20
+  # g2_move_threshold: 20
+  # g2_still_threshold: 21
+  # g3_move_threshold: 30
+  # g3_still_threshold: 31
+  # g4_move_threshold: 40
+  # g4_still_threshold: 41
+  # g5_move_threshold: 50
+  # g5_still_threshold: 51
+  # g6_move_threshold: 60
+  # g6_still_threshold: 61
+  # g7_move_threshold: 70
+  # g7_still_threshold: 71
+  # g8_move_threshold: 80
+  # g8_still_threshold: 81
+
+binary_sensor:
+  - platform: gpio
+    device_class: LIGHT
+    pin: GPIO14
+    id: st_ldr_01
+    name: sensor_luz
+    filters:
+      - delayed_on: 1s
+      - delayed_off: 1s
+      - delayed_on_off: 1s
+
+  - platform: gpio
+    device_class: OCCUPANCY
+    pin: GPIO12
+    id: st_movimento
+    name: sensor Ocupacao
+
+  - platform: ld2410
+    has_target:
+      name: Presence
+    has_moving_target:
+      name: Moving Target
+    has_still_target:
+      name: Still Target
+
+sensor:
+  #Sensor Intensidade Sinal Wifi
+  - platform: wifi_signal
+    id: estm_wifi_sinal
+    name: Intensidade Wifi
+    icon: mdi:signal
+    update_interval: 60s
+
+  - platform: uptime
+    name: Uptime
+
+  - platform: aht10
+    temperature:
+      name: Temperatura
+      id: meteo_station_aht_temperatura
+    humidity:
+      name: Umidade
+      id: meteo_station_aht_umidade
+    update_interval: 20s
+
+  - platform: ld2410
+    moving_distance:
+      name : Moving Distance
+    still_distance:
+      name: Still Distance
+    moving_energy:
+      name: Move Energy
+    still_energy:
+      name: Still Energy
+    detection_distance:
+      name: Detection Distance
