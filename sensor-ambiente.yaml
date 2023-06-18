@@ -12,7 +12,7 @@ esphome:
   # configuration and updates.
   project:
     name: leongalera.sensor-ambiente
-    version: "0.0.1"
+    version: "1.0"
 
 esp8266:
   board: esp01_1m
