@@ -12,4 +12,4 @@ jobs:
       # CHANGEME: Set the filenames of your config files here:
       files: senor-ambiente.yaml
       # CHANGEME: Set the name of your project here:
-      name: senor-ambiente
+      name: Senor Ambiente
